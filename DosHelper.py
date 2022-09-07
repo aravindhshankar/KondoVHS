@@ -13,9 +13,11 @@ wpar=0.11
 
 
 
-def ret_alpha_beta_Ev(thetai = 0.8, xGuess=(0.025,0.025)):
-    ''' Input thetai in degrees'''
-    X,Y,Z = data_for_contours(thetai)
+def ret_alpha_beta_Ev(thetai = 1.2, xGuess=(0.025,0.025)):
+    ''' Input thetai in degrees
+        Also in this case the alpha,beta come inbuilt with the 0.5 factor included
+    '''
+    # X,Y,Z = data_for_contours(thetai)
     sol = find_saddle(xGuess,thetai*IN_RADIAN,verbose = True)
     
     sadx, sady = sol[0]
@@ -33,4 +35,4 @@ def ret_alpha_beta_Ev(thetai = 0.8, xGuess=(0.025,0.025)):
     HessMat = np.array([[a,b],[c,d]])
     EigVals, EigVectors = eig(HessMat)
     EigVals = np.real(EigVals)
-    return (EigVals,Ev)
+    return (0.5*EigVals,Ev,sol)
