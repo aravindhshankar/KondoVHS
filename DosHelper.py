@@ -7,6 +7,8 @@ from scipy.optimize import fmin_cg, fmin_tnc, curve_fit, newton, bisect, fsolve
 from scipy.misc import derivative as scider
 from functools import partial
 from scipy.linalg import eigh,eig,eigvalsh
+from scipy.special import comb
+
 IN_RADIAN = np.pi/180
 vFpar = 4.31074647887324
 wpar=0.11
@@ -36,3 +38,16 @@ def ret_alpha_beta_Ev(thetai = 1.2, xGuess=(0.025,0.025)):
     EigVals, EigVectors = eig(HessMat)
     EigVals = np.real(EigVals)
     return (0.5*EigVals,Ev,sol)
+
+
+
+def smoothstep(x, x_min=0, x_max=1, N=1):
+    x = np.clip((x - x_min) / (x_max - x_min), 0, 1)
+
+    result = 0
+    for n in range(0, N + 1):
+         result += comb(N + n, n) * comb(2 * N + 1, N - n) * (-x) ** n
+
+    result *= x ** (N + 1)
+
+    return result
